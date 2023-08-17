@@ -1,0 +1,22 @@
+{
+  "name": "ngx-miti",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/common": "^15.2.0",
+    "@angular/core": "^15.2.0",
+    "@angular/cdk": "^15.2.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false,
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/sudeepguru/ngx-miti"
+  },
+  "author": {
+    "name": "Sudeep Gurung",
+    "email": "contact@sudeep.guru",
+    "url": "https://sudeep.guru/"
+  }
+}

@@ -3,5 +3,129 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
+    "ngx-miti": {
+      "projectType": "library",
+      "root": "projects/ngx-miti",
+      "sourceRoot": "projects/ngx-miti/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/ngx-miti/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngx-miti/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ngx-miti/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/ngx-miti/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        }
+      }
+    },
+    "ngx-libs-showcase": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/ngx-libs-showcase",
+      "sourceRoot": "projects/ngx-libs-showcase/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/ngx-libs-showcase",
+            "index": "projects/ngx-libs-showcase/src/index.html",
+            "main": "projects/ngx-libs-showcase/src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "projects/ngx-libs-showcase/tsconfig.app.json",
+            "assets": [
+              "projects/ngx-libs-showcase/src/favicon.ico",
+              "projects/ngx-libs-showcase/src/assets"
+            ],
+            "styles": [
+              "projects/ngx-libs-showcase/src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "ngx-libs-showcase:build:production"
+            },
+            "development": {
+              "browserTarget": "ngx-libs-showcase:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "ngx-libs-showcase:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "projects/ngx-libs-showcase/tsconfig.spec.json",
+            "assets": [
+              "projects/ngx-libs-showcase/src/favicon.ico",
+              "projects/ngx-libs-showcase/src/assets"
+            ],
+            "styles": [
+              "projects/ngx-libs-showcase/src/styles.css"
+            ],
+            "scripts": []
+          }
+        }
+      }
+    }
   }
 }
