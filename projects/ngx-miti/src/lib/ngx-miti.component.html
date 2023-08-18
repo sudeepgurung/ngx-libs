@@ -1,40 +1,39 @@
 <input class="datepicker__input" type="text" [value]="selectedDateString" #origin="cdkOverlayOrigin" cdkOverlayOrigin
-    (focus)="open()" (keydown)="$event.preventDefault()" aria-hidden="true">
+  (focus)="open()" (keydown)="$event.preventDefault()" aria-hidden="true">
 <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="origin" [cdkConnectedOverlayOpen]="isOpen"
-    (backdropClick)="close()" (detach)="close()">
-    <div class="datepicker__container">
-        <div class="datepicker__options-container">
-            <span class="datepicker__options-year-container">
-                <span>
-                    Year
-                </span>
-                <select (change)="selectYear($event)">
-                    <option *ngFor="let year of years" [value]="year"
-                        [selected]="year === selectedDate?.nepaliDate?.nepaliYear">
-                        {{year}}
-                    </option>
-                </select>
-            </span>
-            <span class="datepicker__options-month-container">
-                <span>Month</span>
-                <select (change)="selectMonth($event)">
-                    <option *ngFor="let month of months; index as i" [value]="i"
-                        [selected]="i === selectedDate?.nepaliDate?.nepaliMonth! - 1">
-                        {{month}}
-                    </option>
-                </select>
-            </span>
-        </div>
-        <div class="datepicker__days-container">
-            <div class="datepicker__days" *ngFor="let dayLabel of daysLabel; index as i">
-                <div class="datepicker__weekday">{{dayLabel}}</div>
-                <!-- <div class="datepicker__date-container" *ngFor="let date of currentMonthData[i]">
+  (backdropClick)="close()" (detach)="close()">
+  <div class="datepicker__container">
+    <div class="datepicker__options-container">
+      <span class="datepicker__options-year-container">
+        <span>
+          Year 
+        </span>
+        <select (change)="selectYear($event)">
+          <option *ngFor="let year of years" [value]="year" [selected]="year === selectedDate?.nepaliDate?.nepaliYear">
+            {{year}}
+          </option>
+        </select>
+      </span>
+      <span class="datepicker__options-month-container">
+        <span>Month </span>
+        <select (change)="selectMonth($event)">
+          <option *ngFor="let month of months; index as i" [value]="i"
+            [selected]="i === selectedDate?.nepaliDate?.nepaliMonth! - 1">
+            {{month}}
+          </option>
+        </select>
+      </span>
+    </div>
+    <div class="datepicker__days-container">
+      <div class="datepicker__weekday" *ngFor="let dayLabel of daysLabel; index as i">
+       {{dayLabel}}
+        <!-- <div class="datepicker__date-container" *ngFor="let date of currentMonthData[i]">
                     <div (click)="selectDate(date)">
                         <span *ngIf="date === 0">&nbsp;</span>
                         {{date }}
                     </div>
                 </div> -->
-            </div>
-        </div>
+      </div>
     </div>
+  </div>
 </ng-template>

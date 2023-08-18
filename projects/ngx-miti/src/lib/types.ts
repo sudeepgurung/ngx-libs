@@ -16,6 +16,7 @@ export interface IResultDate {
 }
 
 export interface IMonthData {
-  date: IResultDate;
-  class: string;
+  nepali: number,
+  english: number,
+  day: number;
 }
