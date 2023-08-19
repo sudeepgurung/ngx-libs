@@ -13,10 +13,5 @@ export interface IDate {
 export interface IResultDate {
   nepaliDate: INepaliDate;
   date: IDate;
-}
-
-export interface IMonthData {
-  nepali: number,
-  english: number,
-  day: number;
+  weekday?: number
 }

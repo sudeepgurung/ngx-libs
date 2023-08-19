@@ -9,13 +9,13 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { IMonthData, IResultDate } from './types';
+import { IResultDate } from './types';
 import { BS, daysMapping, monthsMapping } from './core';
 // import {
 //   NepaliDate,
 //   MonthData,
 //   DaysMapping,
-//   MonthMapping,
+//   MonthMapping,Ω
 //   DateFormatter,
 // } from './types';
 // import { daysMapping, monthsMapping } from './mapping';
@@ -52,7 +52,7 @@ export class NgxMitiComponent implements OnInit, ControlValueAccessor {
   years: number[] = [];
   months: string[] = [];
   daysLabel: string[] = [];
-  currentMonthData: IMonthData[] = [];
+  currentMonthData: IResultDate[] = [];
 
   currentCalendarMonth: number = 0;
   currentCalendarYear: number = 0;
@@ -76,7 +76,7 @@ export class NgxMitiComponent implements OnInit, ControlValueAccessor {
     this.populateYears();
     this.populateMonths();
     this.populateDaysLabel();
-    this.setCurrentMonthData();
+    // this.setCurrentMonthData();
     this.populateCurrentMonthData(this.currentCalendarMonth, this.currentCalendarYear)
   }
 
@@ -113,37 +113,46 @@ export class NgxMitiComponent implements OnInit, ControlValueAccessor {
   }
 
   populateCurrentMonthData(month: number, year: number) {
+    this.resetCurrentMonthData();
     const daysInThisMonth = (BS.find(bs => bs[0] === year))![month]
     let daysInPrevMonth:number = (BS.find(bs => bs[0] === year))![month - 1]
-    
-  } 
-
-  setCurrentMonthData() {
-    this.resetCurrentMonthData();
-
-    const day = new Date(this.selectedDateString).getDay();
-    const ndate = this.selectedDate!.nepaliDate.nepaliDay;
-    const daysInThisMonth = (BS.find(bs => bs[0] === this.selectedDate?.nepaliDate.nepaliYear))![this.selectedDate!.nepaliDate!.nepaliMonth!]
-    let daysInPrevMonth:number = (BS.find(bs => bs[0] === this.selectedDate?.nepaliDate.nepaliYear))![this.selectedDate!.nepaliDate!.nepaliMonth! - 1]
-    
-    const firstDayofTheMonth = day - ((ndate % 7) - 1);
-    let d = firstDayofTheMonth - 1;
+    console.log(year, month);
+    console.log(this.selectedDate)
     for(let i = 1; i <= daysInThisMonth; i++) {
-      d++
-      if (d > 6) { d = 0 };
-      this.currentMonthData.push({nepali: i, english: i, day: d})
-    }
-    for(let j = firstDayofTheMonth-1; j >= 0; --j) {
-      this.currentMonthData.unshift({nepali: daysInPrevMonth, english: j, day: j})
-      daysInPrevMonth--;
-    }
-    let m = 0;
-    for (let k = d+1; k <=6; k++ ) {
-      m++;
-      this.currentMonthData.push({nepali: m, english: m, day: k})
+       const d = this._nms.bs2ad({nepaliYear: year, nepaliMonth: month, nepaliDay: i})
+      // d++
+      // if (d > 6) { d = 0 };
+      this.currentMonthData.push({nepaliDate: d.nepaliDate, date: d.date , weekday: 1})
     }
     console.log(this.currentMonthData)
   }
+
+  // setCurrentMonthData() {
+  //   this.resetCurrentMonthData();
+
+  //   const day = new Date(this.selectedDateString).getDay();
+  //   const ndate = this.selectedDate!.nepaliDate.nepaliDay;
+  //   const daysInThisMonth = (BS.find(bs => bs[0] === this.selectedDate?.nepaliDate.nepaliYear))![this.selectedDate!.nepaliDate!.nepaliMonth!]
+  //   let daysInPrevMonth:number = (BS.find(bs => bs[0] === this.selectedDate?.nepaliDate.nepaliYear))![this.selectedDate!.nepaliDate!.nepaliMonth! - 1]
+
+  //   const firstDayofTheMonth = day - ((ndate % 7) - 1);
+  //   let d = firstDayofTheMonth - 1;
+  //   for(let i = 1; i <= daysInThisMonth; i++) {
+  //     d++
+  //     if (d > 6) { d = 0 };
+  //     this.currentMonthData.push({nepali: i, english: i, day: d})
+  //   }
+  //   for(let j = firstDayofTheMonth-1; j >= 0; --j) {
+  //     this.currentMonthData.unshift({nepali: daysInPrevMonth, english: j, day: j})
+  //     daysInPrevMonth--;
+  //   }
+  //   let m = 0;
+  //   for (let k = d+1; k <=6; k++ ) {
+  //     m++;
+  //     this.currentMonthData.push({nepali: m, english: m, day: k})
+  //   }
+
+  // }
 
   selectDate(day: number) {
     this.close();
@@ -164,6 +173,4 @@ export class NgxMitiComponent implements OnInit, ControlValueAccessor {
   close() {
     this.isOpen = false;
   }
-
-  
 }
