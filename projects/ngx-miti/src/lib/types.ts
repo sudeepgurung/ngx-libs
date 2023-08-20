@@ -13,5 +13,4 @@ export interface IDate {
 export interface IResultDate {
   nepaliDate: INepaliDate;
   date: IDate;
-  weekday?: number
 }

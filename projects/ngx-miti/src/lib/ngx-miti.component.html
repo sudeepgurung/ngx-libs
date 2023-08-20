@@ -6,7 +6,7 @@
     <div class="datepicker__options-container">
       <span class="datepicker__options-year-container">
         <span>
-          Year 
+          Year
         </span>
         <select (change)="selectYear($event)">
           <option *ngFor="let year of years" [value]="year" [selected]="year === selectedDate?.nepaliDate?.nepaliYear">
@@ -24,16 +24,15 @@
         </select>
       </span>
     </div>
-    <div class="datepicker__days-container">
-      <div class="datepicker__weekday" *ngFor="let dayLabel of daysLabel; index as i">
+    <div class="grid">
+      <div class="week" *ngFor="let dayLabel of daysLabel; index as i" [ngClass]="i%7==0 ? 'last': ''">
        {{dayLabel}}
-        <!-- <div class="datepicker__date-container" *ngFor="let date of currentMonthData[i]">
-                    <div (click)="selectDate(date)">
-                        <span *ngIf="date === 0">&nbsp;</span>
-                        {{date }}
-                    </div>
-                </div> -->
       </div>
+      <div class="datepicker__date-container" *ngFor="let date of currentMonthData[i]">
+        <div (click)="selectDate(date)">
+          <span *ngIf="date === 0">&nbsp;</span>
+          {{date }}
+        </div>
     </div>
   </div>
 </ng-template>

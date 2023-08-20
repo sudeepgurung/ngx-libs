@@ -1,4 +1,4 @@
-import { NgxMitiService } from './ngx-miti.service';
+import {NgxMitiService} from './ngx-miti.service';
 
 import {
   Component,
@@ -7,18 +7,9 @@ import {
   Input,
   ViewEncapsulation,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { OverlayModule } from '@angular/cdk/overlay';
-import { IResultDate } from './types';
-import { BS, daysMapping, monthsMapping } from './core';
-// import {
-//   NepaliDate,
-//   MonthData,
-//   DaysMapping,
-//   MonthMapping,Ω
-//   DateFormatter,
-// } from './types';
-// import { daysMapping, monthsMapping } from './mapping';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {IDate, INepaliDate, IResultDate} from './types';
+import {BS, daysMapping, monthsMapping} from './core';
 
 @Component({
   selector: 'ngx-miti',
@@ -47,8 +38,8 @@ export class NgxMitiComponent implements OnInit, ControlValueAccessor {
 
   today: IResultDate | undefined;
   selectedDate: IResultDate | undefined;
-  displayDateString: string = '';
   selectedDateString: string = '';
+
   years: number[] = [];
   months: string[] = [];
   daysLabel: string[] = [];
@@ -57,7 +48,8 @@ export class NgxMitiComponent implements OnInit, ControlValueAccessor {
   currentCalendarMonth: number = 0;
   currentCalendarYear: number = 0;
 
-  constructor(private _nms: NgxMitiService) {}
+  constructor(private _nms: NgxMitiService) {
+  }
 
   ngOnInit() {
     const today = this._nms.ad2bs();
@@ -66,10 +58,8 @@ export class NgxMitiComponent implements OnInit, ControlValueAccessor {
     } else {
       this.selectedDate = this._nms.ad2bs(this.initialDate);
     }
-    const ed = this.selectedDate.date;
-    this.selectedDateString = `${ed.year}-${
-      ed.month <= 9 ? '0' + ed.month : ed.month
-    }-${ed.day <= 9 ? '0' + ed.day : ed.day}`;
+    this.selectedDateString = this.getEnglishDateStringFromDateObject(this.selectedDate.date)
+
     this.currentCalendarMonth = this.selectedDate.nepaliDate.nepaliMonth;
     this.currentCalendarYear = this.selectedDate.nepaliDate.nepaliYear;
 
@@ -85,9 +75,11 @@ export class NgxMitiComponent implements OnInit, ControlValueAccessor {
       this.years.push(i);
     }
   }
+
   populateMonths() {
     this.months = monthsMapping.en.long!;
   }
+
   populateDaysLabel() {
     this.daysLabel = daysMapping.en.short;
   }
@@ -96,9 +88,11 @@ export class NgxMitiComponent implements OnInit, ControlValueAccessor {
     this.currentMonthData = [];
   }
 
-  propagateChange = (_: any) => {};
+  propagateChange = (_: any) => {
+  };
 
-  propagateTouch = (_: any) => {};
+  propagateTouch = (_: any) => {
+  };
 
   writeValue(value: IResultDate) {
     if (value) {
@@ -106,7 +100,8 @@ export class NgxMitiComponent implements OnInit, ControlValueAccessor {
     }
   }
 
-  registerOnTouched() {}
+  registerOnTouched() {
+  }
 
   registerOnChange(fn: any) {
     this.propagateChange = fn;
@@ -115,14 +110,28 @@ export class NgxMitiComponent implements OnInit, ControlValueAccessor {
   populateCurrentMonthData(month: number, year: number) {
     this.resetCurrentMonthData();
     const daysInThisMonth = (BS.find(bs => bs[0] === year))![month]
-    let daysInPrevMonth:number = (BS.find(bs => bs[0] === year))![month - 1]
-    console.log(year, month);
     console.log(this.selectedDate)
-    for(let i = 1; i <= daysInThisMonth; i++) {
-       const d = this._nms.bs2ad({nepaliYear: year, nepaliMonth: month, nepaliDay: i})
-      // d++
-      // if (d > 6) { d = 0 };
-      this.currentMonthData.push({nepaliDate: d.nepaliDate, date: d.date , weekday: 1})
+    for (let i = 1; i <= daysInThisMonth; i++) {
+      const d = this._nms.bs2ad({nepaliYear: year, nepaliMonth: month, nepaliDay: i})
+      this.currentMonthData.push({nepaliDate: d.nepaliDate, date: d.date})
+    }
+    const firstDay = this.getWeeDayFromDateObject(this.currentMonthData[0].date);
+    const lastDay = this.getWeeDayFromDateObject(this.currentMonthData[daysInThisMonth - 1].date);
+
+
+    let daysInPrevMonth: number = (BS.find(bs => bs[0] === year))![month - 1];
+    let prevMonthDay = daysInPrevMonth;
+    for (let j = firstDay - 1; j >= 0; j--) {
+      const d = this._nms.bs2ad({nepaliYear: year, nepaliMonth: month - 1, nepaliDay: prevMonthDay})
+      this.currentMonthData.unshift({nepaliDate: d.nepaliDate, date: d.date})
+      prevMonthDay--;
+    }
+
+    let nextMonthDay = 0;
+    for (let k = lastDay + 1; k <= 6; k++) {
+      nextMonthDay++;
+      const d = this._nms.bs2ad({nepaliYear: year, nepaliMonth: month + 1, nepaliDay: nextMonthDay})
+      this.currentMonthData.push({nepaliDate: d.nepaliDate, date: d.date})
     }
     console.log(this.currentMonthData)
   }
@@ -172,5 +181,19 @@ export class NgxMitiComponent implements OnInit, ControlValueAccessor {
 
   close() {
     this.isOpen = false;
+  }
+
+  getEnglishDateStringFromDateObject(dateObject: IDate) {
+    return `${dateObject.year}-${
+      dateObject.month <= 9 ? '0' + dateObject.month : dateObject.month
+    }-${dateObject.day <= 9 ? '0' + dateObject.day : dateObject.day}`
+  }
+
+  getWeeDayFromDateObject(dateObject: IDate) {
+    const ad = `${dateObject.year}-${
+      dateObject.month <= 9 ? '0' + dateObject.month : dateObject.month
+    }-${dateObject.day <= 9 ? '0' + dateObject.day : dateObject.day}`
+
+    return new Date(ad).getDay();
   }
 }

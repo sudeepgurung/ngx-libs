@@ -25,7 +25,7 @@ select {
     border: 1px solid #fefefe;
     border-radius: 0 0 4px 4px;
     background-color: #fff;
-    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
 
 }
 
@@ -40,23 +40,25 @@ select {
     gap: 10px;
 }
 
-.datepicker__days-container {
-    display: flex;
-    grid-row: auto;
-
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto auto;
+  padding: 10px;
 }
 
-.datepicker__weekday {
-    font-weight: bold;
-    text-align: center;
-    border: 1px solid #dbdbdb;
-    border-right: none;
-    padding-top: 7px;
-    padding-bottom: 7px;
-    min-width: 50px;
-    width: 40px;
+.grid-item {
+  border: 1px solid #dbdbdb;
+  border-right: none;
+  min-width: 50px;
+  width: 40px;
+  text-align: center;
 }
-
-.datepicker__weekday:last-child {
-    border-right: 1px solid #dbdbdb;
+.weekday {
+  font-weight: bold;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  font-size: 30px;
+}
+.last {
+  border-right: 1px solid #dbdbdb;
 }
