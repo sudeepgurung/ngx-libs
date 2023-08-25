@@ -52,9 +52,9 @@ export class NgxMitiComponent implements OnInit, ControlValueAccessor {
   }
 
   ngOnInit() {
-    const today = this._nms.ad2bs();
+    this.today = this._nms.ad2bs();
     if (this.initialDate === '') {
-      this.selectedDate = today;
+      this.selectedDate = this.today;
     } else {
       this.selectedDate = this._nms.ad2bs(this.initialDate);
     }
@@ -136,34 +136,11 @@ export class NgxMitiComponent implements OnInit, ControlValueAccessor {
     console.log(this.currentMonthData)
   }
 
-  // setCurrentMonthData() {
-  //   this.resetCurrentMonthData();
 
-  //   const day = new Date(this.selectedDateString).getDay();
-  //   const ndate = this.selectedDate!.nepaliDate.nepaliDay;
-  //   const daysInThisMonth = (BS.find(bs => bs[0] === this.selectedDate?.nepaliDate.nepaliYear))![this.selectedDate!.nepaliDate!.nepaliMonth!]
-  //   let daysInPrevMonth:number = (BS.find(bs => bs[0] === this.selectedDate?.nepaliDate.nepaliYear))![this.selectedDate!.nepaliDate!.nepaliMonth! - 1]
-
-  //   const firstDayofTheMonth = day - ((ndate % 7) - 1);
-  //   let d = firstDayofTheMonth - 1;
-  //   for(let i = 1; i <= daysInThisMonth; i++) {
-  //     d++
-  //     if (d > 6) { d = 0 };
-  //     this.currentMonthData.push({nepali: i, english: i, day: d})
-  //   }
-  //   for(let j = firstDayofTheMonth-1; j >= 0; --j) {
-  //     this.currentMonthData.unshift({nepali: daysInPrevMonth, english: j, day: j})
-  //     daysInPrevMonth--;
-  //   }
-  //   let m = 0;
-  //   for (let k = d+1; k <=6; k++ ) {
-  //     m++;
-  //     this.currentMonthData.push({nepali: m, english: m, day: k})
-  //   }
-
-  // }
-
-  selectDate(day: number) {
+  selectDate(day: IResultDate) {
+    this.selectedDate = day;
+    this.selectedDateString = this.getEnglishDateStringFromDateObject(day.date)
+    this.propagateChange(day)
     this.close();
   }
 

@@ -23,16 +23,27 @@
           </option>
         </select>
       </span>
+      <span class="englishmonthyear">
+        Aug/Sep<br/>2023
+      </span>
     </div>
-    <div class="grid">
-      <div class="week" *ngFor="let dayLabel of daysLabel; index as i" [ngClass]="i%7==0 ? 'last': ''">
+    <div class="grid-container">
+      <div class="grid-item weekday" *ngFor="let dayLabel of daysLabel; index as i" [ngClass]="(i+1)%7==0 ? 'last': ''">
        {{dayLabel}}
       </div>
-      <div class="datepicker__date-container" *ngFor="let date of currentMonthData[i]">
-        <div (click)="selectDate(date)">
-          <span *ngIf="date === 0">&nbsp;</span>
-          {{date }}
+      <div class="grid-item" *ngFor="let item of currentMonthData; index as i">
+        <div (click)="selectDate(item)"
+             [class.last]="(i + 1)%7==0"
+             [class.today]="item.nepaliDate!.nepaliDay === today?.nepaliDate!.nepaliDay && item.nepaliDate!.nepaliMonth === today?.nepaliDate!.nepaliMonth "
+             [class.selected]="item.nepaliDate!.nepaliDay === selectedDate?.nepaliDate!.nepaliDay && item?.nepaliDate!.nepaliMonth === today?.nepaliDate!.nepaliMonth "
+        >
+
+          <div class="edate" >{{item.date.day }}</div>
+          <div class="ndate">{{item.nepaliDate.nepaliDay }}</div>
+
+
         </div>
+    </div>
     </div>
   </div>
 </ng-template>

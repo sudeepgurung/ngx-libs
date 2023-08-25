@@ -1,4 +1,4 @@
-@import '~@angular/cdk/overlay-prebuilt.css';
+@import '@angular/cdk/overlay-prebuilt.css';
 
 .datepicker__input {
   width: 100%;
@@ -43,22 +43,57 @@ select {
 .grid-container {
   display: grid;
   grid-template-columns: auto auto auto auto auto auto auto;
-  padding: 10px;
 }
 
 .grid-item {
   border: 1px solid #dbdbdb;
   border-right: none;
+  border-top: none;
   min-width: 50px;
   width: 40px;
   text-align: center;
+  cursor: pointer;
+}
+
+.grid-item:hover {
+  background-color: #eeeeee;
 }
 .weekday {
+  border-top: 1px solid #dbdbdb;
   font-weight: bold;
   padding-top: 7px;
   padding-bottom: 7px;
-  font-size: 30px;
 }
 .last {
   border-right: 1px solid #dbdbdb;
+}
+
+.edate{
+  text-align: right;
+  font-size: 10px;
+  padding: 5px;
+}
+
+.ndate{
+  text-align: center;
+  padding-bottom: 5px;
+  font-size: 14px;
+}
+.englishmonthyear{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  text-align: center;
+}
+
+.today {
+  background-color: #cccccc;
+  font-weight: bold;
+}
+
+.selected {
+  background-color: dodgerblue;
+  color: white;
+  font-weight: bold;
 }
