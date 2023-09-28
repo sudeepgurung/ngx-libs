@@ -47,6 +47,7 @@ export class NgxMitiComponent implements OnInit, ControlValueAccessor {
 
   currentCalendarMonth: number = 0;
   currentCalendarYear: number = 0;
+  selectedNepaliDateString: string = "";
 
   constructor(private _nms: NgxMitiService) {
   }
@@ -59,6 +60,7 @@ export class NgxMitiComponent implements OnInit, ControlValueAccessor {
       this.selectedDate = this._nms.ad2bs(this.initialDate);
     }
     this.selectedDateString = this.getEnglishDateStringFromDateObject(this.selectedDate.date)
+    this.selectedNepaliDateString = this.getNepaliDateStringFromDateObject(this.selectedDate.nepaliDate)
 
     this.currentCalendarMonth = this.selectedDate.nepaliDate.nepaliMonth;
     this.currentCalendarYear = this.selectedDate.nepaliDate.nepaliYear;
@@ -115,8 +117,8 @@ export class NgxMitiComponent implements OnInit, ControlValueAccessor {
       const d = this._nms.bs2ad({nepaliYear: year, nepaliMonth: month, nepaliDay: i})
       this.currentMonthData.push({nepaliDate: d.nepaliDate, date: d.date})
     }
-    const firstDay = this.getWeeDayFromDateObject(this.currentMonthData[0].date);
-    const lastDay = this.getWeeDayFromDateObject(this.currentMonthData[daysInThisMonth - 1].date);
+    const firstDay = this.getWeekDayFromDateObject(this.currentMonthData[0].date);
+    const lastDay = this.getWeekDayFromDateObject(this.currentMonthData[daysInThisMonth - 1].date);
 
 
     let daysInPrevMonth: number = (BS.find(bs => bs[0] === year))![month - 1];
@@ -140,6 +142,7 @@ export class NgxMitiComponent implements OnInit, ControlValueAccessor {
   selectDate(day: IResultDate) {
     this.selectedDate = day;
     this.selectedDateString = this.getEnglishDateStringFromDateObject(day.date)
+    this.selectedNepaliDateString = this.getNepaliDateStringFromDateObject(day.nepaliDate)
     this.propagateChange(day)
     this.close();
   }
@@ -166,7 +169,13 @@ export class NgxMitiComponent implements OnInit, ControlValueAccessor {
     }-${dateObject.day <= 9 ? '0' + dateObject.day : dateObject.day}`
   }
 
-  getWeeDayFromDateObject(dateObject: IDate) {
+  getNepaliDateStringFromDateObject(dateObject: INepaliDate) {
+    return `${dateObject.nepaliYear}-${
+      dateObject.nepaliMonth <= 9 ? '0' + dateObject.nepaliMonth : dateObject.nepaliMonth
+    }-${dateObject.nepaliDay <= 9 ? '0' + dateObject.nepaliDay : dateObject.nepaliDay}`
+  }
+
+  getWeekDayFromDateObject(dateObject: IDate) {
     const ad = `${dateObject.year}-${
       dateObject.month <= 9 ? '0' + dateObject.month : dateObject.month
     }-${dateObject.day <= 9 ? '0' + dateObject.day : dateObject.day}`

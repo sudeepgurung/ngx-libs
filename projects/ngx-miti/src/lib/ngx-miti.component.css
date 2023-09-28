@@ -20,7 +20,7 @@ select {
   box-sizing: border-box;
 }
 
-.datepicker__container {
+.datepicker-container {
     padding: 5px;
     border: 1px solid #fefefe;
     border-radius: 0 0 4px 4px;
@@ -29,7 +29,7 @@ select {
 
 }
 
-.datepicker__options-container {
+.datepicker--options-container {
     background-color: #f5f5f5;
     padding: 7px 10px 7px 10px;
     display: flex;
@@ -38,6 +38,11 @@ select {
     border-radius: 4px 4px 0 0;
     margin-bottom: 5px;
     gap: 10px;
+}
+
+.yearmonth {
+  display: flex;
+  justify-content: space-between;
 }
 
 .grid-container {
@@ -60,7 +65,7 @@ select {
 }
 .weekday {
   border-top: 1px solid #dbdbdb;
-  font-weight: bold;
+
   padding-top: 7px;
   padding-bottom: 7px;
 }
@@ -83,13 +88,13 @@ select {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
+
   text-align: center;
 }
 
 .today {
   background-color: #cccccc;
-  font-weight: bold;
+
 }
 
 .selected {

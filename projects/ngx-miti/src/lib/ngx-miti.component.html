@@ -1,35 +1,74 @@
-<input class="datepicker__input" type="text" [value]="selectedDateString" #origin="cdkOverlayOrigin" cdkOverlayOrigin
-  (focus)="open()" (keydown)="$event.preventDefault()" aria-hidden="true">
+<div style="position: relative">
+  <label
+    style="position: absolute; top: 2px; left: 10px;font-size: 12px; background-color: white; padding: 0 5px">{{selectedDateString}}</label>
+  <input class="datepicker__input" type="text" [value]="selectedNepaliDateString" #origin="cdkOverlayOrigin"
+         cdkOverlayOrigin
+         (focus)="open()" (keydown)="$event.preventDefault()" aria-hidden="true">
+  <svg (click)="open()" style="position: absolute; right: 5px; bottom: 17px; height: 20px; width: 20px"
+       xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+       class="w-6 h-6">
+    <path stroke-linecap="round" stroke-linejoin="round"
+          d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z"/>
+  </svg>
+</div>
+
+
 <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="origin" [cdkConnectedOverlayOpen]="isOpen"
-  (backdropClick)="close()" (detach)="close()">
-  <div class="datepicker__container">
-    <div class="datepicker__options-container">
-      <span class="datepicker__options-year-container">
-        <span>
-          Year
-        </span>
+             (backdropClick)="close()" (detach)="close()">
+  <div class="datepicker-container">
+    <div class="datepicker--options-container">
+      <div>
+        <div class="yearmonth">
+          <div>Year</div>
+          <div>
+            <svg style="width: 12px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="1.5"
+                 stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
+            </svg>
+            <svg style="width: 12px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="1.5"
+                 stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+            </svg>
+          </div>
+        </div>
         <select (change)="selectYear($event)">
           <option *ngFor="let year of years" [value]="year" [selected]="year === selectedDate?.nepaliDate?.nepaliYear">
             {{year}}
           </option>
         </select>
-      </span>
-      <span class="datepicker__options-month-container">
-        <span>Month </span>
+      </div>
+      <div>
+        <div class="yearmonth">
+          <div>Month</div>
+          <div>
+            <svg style="width: 12px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="1.5"
+                 stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
+            </svg>
+            <svg style="width: 12px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="1.5"
+                 stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+            </svg>
+          </div>
+        </div>
         <select (change)="selectMonth($event)">
           <option *ngFor="let month of months; index as i" [value]="i"
-            [selected]="i === selectedDate?.nepaliDate?.nepaliMonth! - 1">
+                  [selected]="i === selectedDate?.nepaliDate?.nepaliMonth! - 1">
             {{month}}
           </option>
         </select>
-      </span>
-      <span class="englishmonthyear">
+      </div>
+      <div class="englishmonthyear">
         Aug/Sep<br/>2023
-      </span>
+      </div>
     </div>
     <div class="grid-container">
       <div class="grid-item weekday" *ngFor="let dayLabel of daysLabel; index as i" [ngClass]="(i+1)%7==0 ? 'last': ''">
-       {{dayLabel}}
+        {{dayLabel}}
       </div>
       <div class="grid-item" *ngFor="let item of currentMonthData; index as i">
         <div (click)="selectDate(item)"
@@ -38,12 +77,12 @@
              [class.selected]="item.nepaliDate!.nepaliDay === selectedDate?.nepaliDate!.nepaliDay && item?.nepaliDate!.nepaliMonth === today?.nepaliDate!.nepaliMonth "
         >
 
-          <div class="edate" >{{item.date.day }}</div>
+          <div class="edate">{{item.date.day }}</div>
           <div class="ndate">{{item.nepaliDate.nepaliDay }}</div>
 
 
         </div>
-    </div>
+      </div>
     </div>
   </div>
 </ng-template>
